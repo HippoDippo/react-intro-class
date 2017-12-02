@@ -32,14 +32,49 @@ class Calculator extends Component {
     if (!this.state.operator) {
       this.setState({
         operator: operator,
-        temp: JSON.parse(this.state.display),
+        temp: parseInt(this.state.display),
         display: "0"
       })
     }
   }
 
   calculate() {
-    
+    if (!this.state.operator) {
+      return;
+    }
+
+    var result;
+
+    switch(this.state.operator) {
+      case ('+'):
+        result = this.state.temp + parseInt(this.state.display, 10);
+        break;
+      case ('-'):
+        result = this.state.temp - parseInt(this.state.display, 10);
+        break;
+      case ('*'):
+        result = this.state.temp * parseInt(this.state.display, 10);
+        break;
+      case ('/'):
+        result = this.state.temp / parseInt(this.state.display, 10);
+        break;
+      default:
+        break;
+    }
+  
+    this.setState({
+      display: result
+    });
+  }
+
+  clearDisplay() {
+    this.setState({
+      header: "Calculator",
+      display: '0',
+      operator: '',
+      temp: 0,
+      resetDisplay: false
+    });
   }
 
   render() {
@@ -53,7 +88,7 @@ class Calculator extends Component {
             <span className="total">{this.state.display}</span>
           </div>
     
-          <div className="btn clear"></div>
+          <div onClick={(e)=> this.clearDisplay()}className="btn clear"></div>
     
           <div onClick={(e)=> this.setDisplay('0')} className="btn zero"></div>
           <div onClick={(e)=> this.setDisplay('1')} className="btn one"></div>
@@ -66,7 +101,7 @@ class Calculator extends Component {
           <div onClick={(e)=> this.setDisplay('8')} className="btn eight"></div>
           <div onClick={(e)=> this.setDisplay('9')} className="btn nine"></div>
     
-          <div onClick={(e)=> this.setOperator('=')} className="btn equal"></div>
+          <div onClick={(e)=> this.calculate()} className="btn equal"></div>
           <div onClick={(e)=> this.setOperator('*')} className="btn multiply"></div>
           <div onClick={(e)=> this.setOperator('/')} className="btn divide"></div>
           <div onClick={(e)=> this.setOperator('-')} className="btn subtract"></div>
